@@ -65,3 +65,11 @@ curl localhost:8383
 sudo trivy image databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
 
 sudo docker push databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
+
+sudo docker compose up -d
+
+sudo docker ps
+
+sudo docker compose down
+
+sudo docker ps

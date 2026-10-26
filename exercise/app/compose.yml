@@ -1,0 +1,5 @@
+services:
+  frontend:
+    image: databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
+    ports:
+      - 8383:80
