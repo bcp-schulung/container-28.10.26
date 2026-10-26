@@ -63,3 +63,5 @@ sudo docker run -d -p 8383:80 databport-harbor.databport.it-scholar.com/seminar/
 curl localhost:8383
 
 sudo trivy image databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
+
+sudo docker push databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
