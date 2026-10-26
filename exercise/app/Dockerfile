@@ -1,7 +1,17 @@
-FROM nginx:latest
+FROM alpine:latest
 
-RUN apt update && apt install nano dnsutils -y
+RUN apk add --no-cache nginx \
+    && mkdir -p /run/nginx \
+    && printf '%s\n' \
+        'server {' \
+        '    listen 80;' \
+        '    server_name _;' \
+        '    root /var/www/html;' \
+        '    index index.html;' \
+        '}' > /etc/nginx/http.d/default.conf
 
-COPY index.html /usr/share/nginx/html/index.html
+COPY index.html /var/www/html/index.html
 
 EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
