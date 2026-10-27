@@ -3,3 +3,22 @@ services:
     image: databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
     ports:
       - 8383:80
+    networks:
+      - edge
+  backend:
+    image: databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
+    volumes:
+      - ./index.html:/var/www/html/index.html:ro
+    networks:
+      - edge
+      - data
+  database:
+    image: databport-harbor.databport.it-scholar.com/seminar/ben-coeppicus:v2
+    networks:
+      - data
+
+networks:
+  edge:
+    driver: bridge
+  data:
+    driver: bridge
