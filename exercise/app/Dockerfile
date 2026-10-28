@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache nginx \
+RUN apk add --no-cache nginx curl bind-tools nano \
     && mkdir -p /run/nginx \
     && printf '%s\n' \
         'server {' \
@@ -13,5 +13,7 @@ RUN apk add --no-cache nginx \
 COPY index.html /var/www/html/index.html
 
 EXPOSE 80
+
+USER nginx
 
 CMD ["nginx", "-g", "daemon off;"]

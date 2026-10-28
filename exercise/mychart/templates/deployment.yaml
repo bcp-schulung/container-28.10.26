@@ -15,10 +15,30 @@ spec:
       labels:
         app: {{ .name }}
     spec:
+      volumes:
+        - name: html
+          configMap:
+            name: {{ .name }}-html
       containers:
         - name: {{ .name }}
           image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
           ports:
             - containerPort: {{ $.Values.service.targetPort }}
+          volumeMounts:
+            - name: html
+              mountPath: /var/www/html/index.html
+              subPath: index.html
+              readOnly: true
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10
 ---
 {{- end}}
