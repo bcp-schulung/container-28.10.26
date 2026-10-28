@@ -24,6 +24,12 @@ spec:
           image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
           ports:
             - containerPort: {{ $.Values.service.targetPort }}
+          env:
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: superdataportsecret
+                  key: password
           volumeMounts:
             - name: html
               mountPath: /var/www/html/index.html
