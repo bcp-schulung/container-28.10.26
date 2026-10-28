@@ -1,19 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: default-deny
 spec:
   podSelector: {}
   policyTypes:
     - Ingress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: default-deny-egress
-spec:
-  podSelector: {}
-  policyTypes:
     - Egress
 ---
 apiVersion: networking.k8s.io/v1
@@ -44,22 +36,34 @@ spec:
     matchLabels:
       app: frontend
   policyTypes:
-    - Ingress
     - Egress
-  ingress:
-    # Traefik namespace is matched via the auto-added kubernetes.io/metadata.name label.
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: traefik
-      ports:
-        - protocol: TCP
-          port: {{ .Values.service.targetPort }}
+    - Ingress
   egress:
     - to:
         - podSelector:
             matchLabels:
               app: backend
+      ports:
+        - protocol: TCP
+          port: {{ .Values.service.targetPort }}
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: felix-roeder
+        - podSelector:
+            matchLabels:
+              app: frontend
+      ports:
+        - protocol: TCP
+          port: {{ .Values.service.targetPort }}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: felix-roeder
+        - podSelector:
+            matchLabels:
+              app: frontend
       ports:
         - protocol: TCP
           port: {{ .Values.service.targetPort }}
